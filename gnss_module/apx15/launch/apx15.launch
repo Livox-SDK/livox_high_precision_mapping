@@ -1,0 +1,7 @@
+<launch>
+   <node pkg="apx15" type="apx15_gsof_driver" name="apx15_gsof_driver" output="screen">
+     <param name="port" value="/dev/ttyUSB1" />
+     <param name="baud" value="230400" />
+   </node>
+   
+</launch>
