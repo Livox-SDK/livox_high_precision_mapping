@@ -4,24 +4,28 @@
 
 ### 1.1 Main functions
 
-Use a Mid-40 LiDAR with a detection distance of 260m, an accuracy of 2cm, and a non-repetitive scanning pattern, combined with the high-precision position and attitude data provided by the APX-15 inertial navigation module, to enable real-time high-precision mapping.
 
-The following picture is the real-time construction effect:
+
+Enable real-time high-precision mapping by using a Mid-40 LiDAR with a detection distance of 260m, an accuracy of 2cm, and a non-repetitive scanning pattern, combined with the high-precision position and attitude data provided by the APX-15 inertial navigation module. 
+
+The following two pictures show the real-time renderings:
 
 ![](doc/images/test1.gif)
 ![](doc/images/test2.gif)
 
-The following picture is the full effect:
+Below is the overall rendering :
 
 ![](doc/images/demo02.png)
 
 ### 1.2 System Block Diagram
 
-The whole system contains the following main modules. The connection and data interaction of each module are shown in the following figure:
+The figure below shows the setup of the  real-time high-precision mapping system, including the connection and data interaction between modules.
+
+
 
 ![](doc/images/system.png)
 
-The interface and purpose of the above data link:
+Detailed explanations ( or requirements ) of each module are as follows:
 
 GNSS signal: GPS antenna, providing satellite signals to APX-15;
 
@@ -35,13 +39,11 @@ GNRMC: USB to RS232 level, connect to Manifold, provide Mid-40 with the time inf
 
 GSOF: USB to TTL level, connect to Manifold, transmit the attitude and position data output by APX-15;
 
-Power: Use 24v DC power supply to power Manifold, Mid-40, APX-15;
+Power: 24V DC power supply to power Manifold, Mid-40, APX-15;
 
-## 2 Hardware System
+## 2 System Setup
 
-Start from here we will introduce how to complete the hardware to build the entire system, and complete the configuration of related modules.
-
-### 2.1 Hardware List
+### 2.1 Preparations
 
 First of all, you need to prepare the following hardware modules. The remarks have descriptions and links of related products.
 
@@ -57,21 +59,19 @@ First of all, you need to prepare the following hardware modules. The remarks ha
 
 *Remarks:*
 
-- USB to TTL/RS232 module: Because the signal output by COM1 of APX-15 is RS232 level and the signal output by COM3 is 3.3v TTL level, we need a USB to TTL module and a USB to RS232 module respectively;
-- Manifold 2: can be replaced by other small miniPCs, if you want to install on multi-rotor aircraft, you need to consider power supply and weight;
-- Mid-40: Because the entire system needs to be compactly assembled together, it is recommended to use the short cable version of Mid-40. To purchase the short line version, you need to contact the Livox official sales staff;
-- **Livox Converter 2.0**: If you use Mid-40's own adapter box (Livox Converter 1.0, 10~16v power input, 485 level synchronization interface), you need to use a DC-DC module to convert a 24v power supply voltage to 12v, and a module that converts TTL to 485 level, to convert the APX PPS signal to 485 level, and then accesses the synchronization interface. Livox Converter 2.0 is a module included in Horizon/Tele products. If you purchase separately, you need to contact the official sales staff of Livox;
-- Wireless Network Module: Provide network RTK connection service for APX. Because APX uses wired Ethernet interface, the network module needs to be equipped with RJ45 wired interface;
+- USB to TTL/RS232 module: You need both a USB to TTL module and a USB to RS232 module, as the signal output by COM1 of APX-15 is RS232 level and the signal output by COM3 is 3.3v TTL level.
+- Manifold 2: You can replace it with other small miniPCs, especally when installing it on a multi-rotor aircraft as the power supply and weight become big concerns.
+- Mid-40: Because the entire system needs to be compactly assembled together, we strongly  recommend that you use a short cable to connect MID40. To purchase the short line version, please contact Livox sales representatives for details.
+- **Livox Converter 2.0**: Livox Converter 2.0 is a module included in Horizon/Tele products but can be purchased separately. Please contact our sales for details. You can also use Mid-40's own adapter box (Livox Converter 1.0, 10~16v power input, 485 level synchronization interface), combined with a DC-DC module to convert a 24v power supply voltage to 12v, and a module that converts TTL to 485 level, to convert the APX PPS signal to 485 level, and then accesses the synchronization interface. 
+- Wireless Network Module: It provide network RTK connection service for APX. Because APX uses wired Ethernet interface, the network module needs to be equipped with RJ45 wired interface.
 
 ### 2.2 Connection and configuration
 
-The whole system has 3 core modules, which are:
+The whole system includes 3 core modules:
 
 1. Mid-40
 2. Manifold/miniPC
 3. APX-15
-
-The next part will introduce their connections in system, and functional configuration.
 
 #### 2.2.1 Mid-40
 
@@ -79,7 +79,7 @@ One end of the Livox Converter box is connected to Mid-40, and the other end has
 
 Power supply: connect 24v power supply;
 
-Network port: network cable connects to Manifold 2;
+Network port: connect to Manifold 2;
 
 Synchronization interface: the blue part of the synchronization signal line is connected to the APX PPS signal output port (PIN13), and the black part is connected to the APX GND port (PIN12);
 
@@ -89,7 +89,7 @@ Synchronization interface: the blue part of the synchronization signal line is c
 
 Power supply: connect 24v power supply;
 
-Network port: network cable connected to Livox Converter 2.0;
+Network port: connect to Livox Converter 2.0;
 
 USB to RS232 module: RS232 Rx is connected to APX-15 COM1 Tx (PIN20), RS232 GND is connected to APX-15 GND (PIN12);
 
@@ -133,19 +133,25 @@ Add NTRIP client account:
 
 ### 2.3 Assembly and commissioning
 
-According to the above introduction, after completing the corresponding hardware connection and interface configuration, install each module as compactly as possible in the following manner:
+
+
+After the hardware connection and interface configuration, integrate all the modules as compactly as possible in the following manner:
 
 ![](doc/images/assemble.png)
 
-Relative coordinates between imu and LiDAR in assembly:
+Relationship between imu coordinate and LiDAR coordinate
 
 ![](doc/images/coord.png)
 
-Effect picture installed on the drone:
+Picture of the system after installed on the drone:
 
 ![](doc/images/on_drone.png)
 
-The real installation is shown in the above figure, because LiDAR and imu are installed closely, we do not need to configure the translation parameter between them, but the distance between the imu and GNSS antenna is relatively far, we need to configure this translation parameter:
+
+
+The calibration between Lidar and imu is unnecessary as they are close to each other. But we do need to compensate the displacement between imu and GNSS by configuring the translation parameter as follows:
+
+
 
 ![](doc/images/gnss_antenna.png)
 
@@ -153,9 +159,9 @@ The real installation is shown in the above figure, because LiDAR and imu are in
 
 ### 3.1 Download and Install
 
-The following test is based on Ubuntu 64-bit 16.04 environment.
+The following test runs in Ubuntu 64-bit 16.04 environment.
 
-1. Install [Livox SDK](https://github.com/Livox-SDK/Livox-SDK) and [livox_ros_driver](https://github.com/Livox-SDK/livox_ros_driver), if installed, you can skip this step:
+1. Install [Livox SDK](https://github.com/Livox-SDK/Livox-SDK) and [livox_ros_driver](https://github.com/Livox-SDK/livox_ros_driver). Skip this if they're already installed:
 
 ```
 # Install Livox_SDK
@@ -191,7 +197,7 @@ source ./devel/setup.sh
 
 **LiDAR Configuration**
 
-In the [livox_ros_driver/config/livox_lidar_config.json](https://github.com/Livox-SDK/livox_ros_driver/blob/master/livox_ros_driver/config/livox_lidar_config.json) file, add Mid-40's SN number in `broadcast_code`, the rest configurations are as follows:
+In the [livox_ros_driver/config/livox_lidar_config.json](https://github.com/Livox-SDK/livox_ros_driver/blob/master/livox_ros_driver/config/livox_lidar_config.json) file, add Mid-40's SN number in `broadcast_code`. The rest configurations are as follows:
 
 ```
     "lidar_config": [
@@ -209,7 +215,7 @@ In the [livox_ros_driver/config/livox_lidar_config.json](https://github.com/Livo
 
 **Port Configuration**
 
-After connecting the above hardware, there will be two more devices in the `/dev/` directory of Manifold 2, such as:
+After connecting the above hardware, there will be two more devices in the `/dev/` directory of Manifold 2:
 
 ```
 /dev/ttyUSB0
@@ -225,7 +231,7 @@ In the [gnss_module/apx15/launch/apx15.launch](gnss_module/apx15/launch/apx15.la
     <param name="baud" value="230400" />
 ```
 
-In the [livox_ros_driver/config/livox_lidar_config.json](https://github.com/Livox-SDK/livox_ros_driver/blob/master/livox_ros_driver/config/livox_lidar_config.json) file, the configuration parameter enable_timesync is true and device_name is /dev/ttyUSB1, baudrate_index is 6(corresponding to 115200 baud rate):
+In the [livox_ros_driver/config/livox_lidar_config.json](https://github.com/Livox-SDK/livox_ros_driver/blob/master/livox_ros_driver/config/livox_lidar_config.json) file, set the configuration parameter enable_timesync to true, device_name to /dev/ttyUSB1, and baudrate_index to 6 (corresponding to 115200 baud rate):
 
 ```
     "timesync_config": {
@@ -241,11 +247,11 @@ In the [livox_ros_driver/config/livox_lidar_config.json](https://github.com/Livo
 
 Livox-Mapping is a mapping program for Livox LiDAR. The project uses rtk / imu information to stitch together the information output by LiDAR to form a complete point cloud.
 
-- First, modify the map_file_path value in the livox_mapping.launch file and set your point cloud save path;
+- First, set a path to save the point cloud in the livox_mapping.launch file. 
 
-- If you use a different coordinate system than the one described in this document, please modify the external parameter options in livox_mapping_case.cpp;
+- Modify the extrinsic parameters in livox_mapping_case.cpp if your coordinates are different from ours.
 
-- If you use a LiDAR data frequency different from 100Hz described in this document, please modify the lidar_delta_time option in livox_mapping_case.cpp;
+- Modify the lidar_delta_time in livox_mapping_case.cpp if your LiDAR data frequency is not 100Hz.;
 
 #### 3.3.1 Online Mapping
 
@@ -257,13 +263,13 @@ roslaunch livox_mapping mapping_online.launch
 
 #### 3.3.2 Offline Mapping
 
-In apx_lidar_raw.launch, set `rosbag_enable` as true and configure the storage path of the bag file. After running, it will automatically store the three raw data of imu, gnss and point cloud.
+In apx_lidar_raw.launch, set `rosbag_enable` to true and configure the saving path for the bag file. It will automatically store the three raw data of imu, gnss and point cloud after execution.
 
 ```
 roslaunch livox_mapping apx_lidar_raw.launch
 ```
 
-When the data is collected, run livox_mapping.launch to complete the offline mapping.
+After data collection, run livox_mapping.launch to complete the offline mapping.
 
 ```
 #Play the rosbag file recorded above
@@ -274,7 +280,7 @@ roslaunch livox_mapping livox_mapping.launch
 
 ### 3.4 Data Format
 
-imu data format is sensor_msgs::Imu, including quaternion, roll, pitch, yaw data and corresponding accuracy, x/y/z angular velocity, acceleration data.
+Imu data is saved in format sensor_msgs::Imu, including quaternion, roll, pitch, yaw data with corresponding accuracy, and the angular velocity and acceleration along x/y/z axis.
 
 ```
 #geometry_msgs/Quaternion orientation
@@ -302,7 +308,7 @@ imu data format is sensor_msgs::Imu, including quaternion, roll, pitch, yaw data
     float64 z               # unit: m/s^2
 ```
 
-Navigation location data format is sensor_msgs::NavSatFix, including GPS and IMU status, latitude, longitude, altitude data and corresponding accuracy data.
+Location and navigation data is saved in format sensor_msgs::NavSatFix, including GPS and IMU status, and  latitude, longitude, altitude with corresponding accuracy.
 
 ```
 #sensor_msgs/NavSatStatus status
