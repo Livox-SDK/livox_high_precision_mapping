@@ -5,10 +5,9 @@
     <include file="$(find livox_ros_driver)/launch/livox_lidar_rviz.launch"/>
     <include file="$(find apx15)/launch/apx15.launch"/>
 
-    </group>
-        <group if="$(arg rosbag_enable)">
+    <group if="$(arg rosbag_enable)">
         <node pkg="rosbag" type="record" name="rosbag_record"
-            args="record -a -o $(arg bag_file_path)"/>
+              args="record -a -o $(arg bag_file_path)"/>
     </group>
 
 </launch>

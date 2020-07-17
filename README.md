@@ -10,9 +10,11 @@ Enable real-time high-precision mapping by using a Mid-40 LiDAR with a detection
 
 The following two pictures show the real-time renderings:
 
-![](doc/images/test1.gif)
-![](doc/images/test2.gif)
 
+<div align=center><img src="doc/images/test1.gif"></div>
+
+
+<div align=center><img src="doc/images/test2.gif"></div>
 Below is the overall rendering :
 
 ![](doc/images/demo02.png)
